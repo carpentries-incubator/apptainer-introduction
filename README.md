@@ -1,16 +1,16 @@
-# Reproducible computational environments using containers: Introduction to Singularity
+# Reproducible computational environments using containers: Introduction to Apptainer
 
 [![Create a Slack Account with us](https://img.shields.io/badge/Create_Slack_Account-The_Carpentries-071159.svg)](https://swc-slack-invite.herokuapp.com/)
 
-This lesson provides an introduction to the [Singularity container platform](https://github.com/hpcng/singularity).
+This lesson provides an introduction to the [Apptainer container platform](https://github.com/apptainer/apptainer).
 
-It covers the basics of using Singularity and creating containers:
+It covers the basics of using Apptainer and creating containers:
 
- - What is Singularity?
- - Installing/running Singularity on the command line
+ - What is Apptainer?
+ - Installing/running Apptainer on the command line
  - Running containers
- - Creating Singularity images
- - Running an MPI parallel application from a Singularity container
+ - Creating Apptainer images
+ - Running an MPI parallel application from a Apptainer container
 
 ## Contributing
 
@@ -32,8 +32,9 @@ Look for the tag ![good_first_issue](https://img.shields.io/badge/-good%20first%
 
 Current maintainers of this lesson are
 
-* [Jeremy Cohen](https://github.com/jcohen02)
-* [Andy Turner](https://github.com/aturner-epcc)
+* [Caughlin Bohn](https://github.com/cbohn4)
+* [Natasha Pavlovikj](https://github.com/npavlovikj)
+
 
 ## Authors
 
@@ -46,4 +47,4 @@ To cite this lesson, please consult with [CITATION](CITATION)
 [cdh]: https://cdh.carpentries.org
 [community-lessons]: https://carpentries.org/community-lessons
 [lesson-example]: https://carpentries.github.io/lesson-example
-[issues]: https://github.com/carpentries-incubator/singularity-introduction/issues
+[issues]: https://github.com/carpentries-incubator/apptainer-introduction/issues

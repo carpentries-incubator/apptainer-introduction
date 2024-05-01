@@ -15,7 +15,7 @@ keypoints:
 - "The `apptainer` command can be used to pull images from Apptainer Hub and run a container from an image file."
 ---
 
-The episodes in this lesson will introduce you to the [Apptainer](https://sylabs.io/apptainer/) container platform and demonstrate how to set up and use Apptainer.
+The episodes in this lesson will introduce you to the [Apptainer](https://github.com/apptainer/apptainer) container platform and demonstrate how to set up and use Apptainer.
 
 This material is split into 2 parts:
 
@@ -53,7 +53,7 @@ _Later in this material, when we come to look at building Apptainer images ourse
 System administrators will not, generally, install Docker on shared computing platforms such as lab desktops, research clusters or HPC platforms because the design of Docker presents potential security issues for shared platforms with multiple users. Apptainer, on the other hand, can be run by end-users entirely within "user space", that is, no special administrative privileges need to be assigned to a user in order for them to run and interact with containers on a platform where Apptainer has been installed.
 
 ## Getting started with Apptainer
-Initially developed within the research community, Apptainer is open source and the [repository](https://github.com/hpcng/apptainer) is currently available in the "[The Next Generation of High Performance Computing](https://github.com/hpcng)" GitHub organisation. Part I of this Apptainer material is intended to be undertaken on a remote platform where Apptainer has been pre-installed. 
+Initially developed within the research community, Apptainer is open source and the [repository](https://github.com/apptainer/apptainer) is currently available in the "[Apptainer](https://github.com/apptainer/)" GitHub organisation. Part I of this Apptainer material is intended to be undertaken on a remote platform where Apptainer has been pre-installed. 
 
 _If you're attending a taught version of this course, you will be provided with access details for a remote platform made available to you for use for Part I of the Apptainer material. This platform will have the Apptainer software pre-installed._
 
