@@ -55,7 +55,7 @@ Bootstrap: docker
 From: ubuntu:24.04
 
 %files
-    /home/ubuntu/ubuntu_osu_test/osu-micro-benchmarks-7.4.tar.gz /root/
+    /home/apptainer/osu-micro-benchmarks-7.4.tar.gz /root/
 
 %environment
     export SINGULARITY_MPICH_DIR=/usr
