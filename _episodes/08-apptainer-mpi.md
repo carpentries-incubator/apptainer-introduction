@@ -34,51 +34,52 @@ As described in Apptainer's [MPI documentation](https://sylabs.io/guides/3.5/use
 
 #### **Container portability and performance on HPC platforms**
 
-While building a container on a local system that is intended for use on a remote HPC platform does provide some level of portability, if you're after the best possible performance, it can present some issues. The version of MPI in the container will need to be built and configured to support the hardware on your target platform if the best possible performance is to be achieved. Where a platform has specialist hardware with proprietary drivers, building on a different platform with different hardware present means that building with the right driver support for optimal performance is not likely to be possible. This is especially true if the version of MPI available is different (but compatible). Apptainer's [MPI documentation](https://sylabs.io/guides/3.5/user-guide/mpi.html) highlights two different models for working with MPI codes. The _[hybrid model](https://sylabs.io/guides/3.5/user-guide/mpi.html#hybrid-model)_ that we'll be looking at here involves using the MPI executable from the MPI installation on the host system to launch apptainer and run the application within the container. The application in the container is linked against and uses the MPI installation within the container which, in turn, communicates with the MPI daemon process running on the host system. In the following section we'll look at building a Apptainer image containing a small MPI application that can then be run using the hybrid model.
+While building a container on a local system that is intended for use on a remote HPC platform does provide some level of portability, if you're after the best possible performance, it can present some issues. The version of MPI in the container will need to be built and configured to support the hardware on your target platform if the best possible performance is to be achieved. Where a platform has specialist hardware with proprietary drivers, building on a different platform with different hardware present means that building with the right driver support for optimal performance is not likely to be possible. This is especially true if the version of MPI available is different (but compatible). Apptainer's [MPI documentation](https://apptainer.org/docs/user/1.0/mpi.html) highlights two different models for working with MPI codes. The _[hybrid model](https://sylabs.io/guides/3.5/user-guide/mpi.html#hybrid-model)_ that we'll be looking at here involves using the MPI executable from the MPI installation on the host system to launch apptainer and run the application within the container. The application in the container is linked against and uses the MPI installation within the container which, in turn, communicates with the MPI daemon process running on the host system. In the following section we'll look at building a Apptainer image containing a small MPI application that can then be run using the hybrid model.
 
 ### Building and running a Apptainer image for an MPI code
 
 #### **Building and testing an image**
 
-This example makes the assumption that you'll be building a container image on a local platform and then deploying it to a cluster with a different but compatible MPI implementation. See [Apptainer and MPI applications](https://sylabs.io/guides/3.5/user-guide/mpi.html#apptainer-and-mpi-applications) in the Apptainer documentation for further information on how this works.
+This example makes the assumption that you'll be building a container image on a local platform and then deploying it to a cluster with a different but compatible MPI implementation. See [Apptainer and MPI applications](https://apptainer.org/docs/user/1.0/mpi.html) in the Apptainer documentation for further information on how this works.
 
 We'll build an image from a definition file. Containers based on this image will be able to run MPI benchmarks using the [OSU Micro-Benchmarks](https://mvapich.cse.ohio-state.edu/benchmarks/) software.
 
-In this example, the target platform is a remote HPC cluster that uses [Intel MPI](https://software.intel.com/content/www/us/en/develop/tools/mpi-library.html). The container can be built via the Apptainer Docker image that we used in the previous episode of the Apptainer material.
+In this example, the target platform is a remote HPC cluster that uses [OpenMPI](https://www.open-mpi.org/). The container can be built via the Apptainer Docker image that we used in the previous episode of the Apptainer material.
 
-Begin by creating a directory and, within that directory, downloading and saving the "tarball" for version 7.3 of the OSU Micro-Benchmarks from the [OSU Micro-Benchmarks page](https://mvapich.cse.ohio-state.edu/benchmarks/).
+Begin by creating a directory and, within that directory, downloading and saving the "tarball" for version 7.4 of the OSU Micro-Benchmarks from the [OSU Micro-Benchmarks page](https://mvapich.cse.ohio-state.edu/benchmarks/).
 
 In the same directory, save the following definition file content to a `.def` file, e.g. `osu_benchmarks.def`:
 
 ~~~
 Bootstrap: docker
-From: almalinux:8.9
+From: ubuntu:24.04
 
 %files
-    /home/apptainer/osu-micro-benchmarks-7.3.tar.gz /root/
+    /home/ubuntu/ubuntu_osu_test/osu-micro-benchmarks-7.4.tar.gz /root/
 
 %environment
     export SINGULARITY_MPICH_DIR=/usr
     export OSU_DIR=/usr/local/osu/libexec/osu-micro-benchmarks/mpi
 
 %post
-    yum update -y && yum install -y gcc gcc-c++ make openmpi
+    apt update -y && apt install -y build-essential openmpi-bin openmpi-doc libopenmpi-dev 
     cd /root
-    tar zxvf osu-micro-benchmarks-7.3.tar.gz
-    cd osu-micro-benchmarks-7.3/
+    tar zxvf osu-micro-benchmarks-7.4.tar.gz
+    cd osu-micro-benchmarks-7.4/
     echo "Configuring and building OSU Micro-Benchmarks..."
-    ./configure --prefix=/usr/local/osu CC=/usr/lib64/openmpi/bin/mpicc CXX=/usr/lib64/openmpi/bin/mpicxx
+    ./configure --prefix=/usr/local/osu CC=/usr/bin/mpicc CXX=/usr/bin/mpicxx
     make -j16 && make install
 
 %runscript
     echo "Rank ${PMI_RANK} - About to run: ${OSU_DIR}/$*"
     exec ${OSU_DIR}/$*
+
 ~~~
 {: .output}
 
 A quick overview of what the above definition file is doing:
 
- - The image is being bootstrapped from the `ubuntu:20.04` Docker image.
+ - The image is being bootstrapped from the `ubuntu:24.04` Docker image.
  - In the `%files` section: The OSU Micro-Benchmarks and MPICH tar files are copied from the current directory into the `/root` directory within the image.
  - In the `%environment` section: Set a couple of environment variables that will be available within all containers run from the generated image.
  - In the `%post` section:
